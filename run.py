@@ -11,5 +11,5 @@ for index, job in enumerate(jobs):
 
     if (index+1) % N == 0:
         print('waiting')
-        time.sleep(60)
+        time.sleep(2*60)
 
