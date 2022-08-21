@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 import time
 
@@ -11,5 +13,5 @@ for index, job in enumerate(jobs):
 
     if (index+1) % N == 0:
         print('waiting')
-        time.sleep(2*60)
+        #time.sleep(2*60)
 
