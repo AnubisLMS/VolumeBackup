@@ -13,7 +13,7 @@ netids = [parse("ide-volume-{}", v)[0] for v in volumes]
 jobs_dir = Path('jobs/')
 
 def parse_args() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser('Anubis Volume Backup (avb)')
     parser.set_defaults(func=None)
     sub_parser = parser.add_subparsers()
 
