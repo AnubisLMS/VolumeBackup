@@ -12,6 +12,7 @@ volumes = json.load(open('./volumes.json'))
 netids = [parse("ide-volume-{}", v)[0] for v in volumes]
 jobs_dir = Path('jobs/')
 
+
 def parse_args() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser('Anubis Volume Backup (avb)')
     parser.set_defaults(func=None)
@@ -120,8 +121,10 @@ def backup_restore(args, label: str):
         if (index+1) % args.jobs == 0:
             time.sleep(args.wait)
 
+
 def backup(args):
     return backup_restore(args, 'backup')
+
 
 def restore(args):
     return backup_restore(args, 'restore')    
@@ -136,6 +139,7 @@ def main() -> int | None:
         exit(1)
     
     return args.func(args)
+
 
 if __name__ == "__main__":
     main()
