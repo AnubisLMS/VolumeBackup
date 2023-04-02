@@ -11,7 +11,7 @@ from tqdm import tqdm
 volumes = json.load(open('./volumes.json'))
 netids = [parse("ide-volume-{}", v)[0] for v in volumes]
 jobs_dir = Path('jobs/')
-
+now = datetime.now().strftime('%Y%m%d-%H%M%S')
 
 def parse_args() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser('Anubis Volume Backup (avb)')
@@ -21,7 +21,7 @@ def parse_args() -> argparse.ArgumentParser:
     gen_parser = sub_parser.add_parser('gen')
     gen_parser.add_argument('--backup_host', default='s3.backup.anubis-lms.io')
     gen_parser.add_argument('--backup_host_path', default='/home/anubis/backups/volumes')
-    gen_parser.add_argument('--id', dest='identifier', default=datetime.now().strftime('%Y%m%d-%H%M%S'), help='')
+    gen_parser.add_argument('--id', dest='identifier', default=now, help='')
     gen_parser.add_argument('--ttl', '-t', dest='ttl', default=30, type=int, help='TTL of job')
     gen_parser.set_defaults(func=gen)
 
@@ -87,6 +87,7 @@ def gen(args):
 
 
 def backup_restore(args, label: str):
+    print(f'{now=}')
     latest_dir = jobs_dir / args.identifier
     job_dir = latest_dir / label
 
