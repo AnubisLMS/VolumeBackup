@@ -7,7 +7,7 @@ metadata:
     component: volume-backup
   namespace: anubis
 spec:
-  ttlSecondsAfterFinished: 300
+  ttlSecondsAfterFinished: {{ ttl }}
   template:
     spec:
       securityContext:

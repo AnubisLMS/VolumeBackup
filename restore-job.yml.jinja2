@@ -21,7 +21,7 @@ metadata:
     component: volume-restore
   namespace: anubis
 spec:
-  ttlSecondsAfterFinished: 300
+  ttlSecondsAfterFinished: {{ ttl }}
   template:
     spec:
       securityContext:

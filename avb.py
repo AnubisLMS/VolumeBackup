@@ -22,6 +22,7 @@ def parse_args() -> argparse.ArgumentParser:
     gen_parser.add_argument('--backup_host', default='s3.backup.anubis-lms.io')
     gen_parser.add_argument('--backup_host_path', default='/home/anubis/backups/volumes')
     gen_parser.add_argument('--id', dest='identifier', default=datetime.now().strftime('%Y%m%d-%H%M%S'), help='')
+    gen_parser.add_argument('--ttl', '-t', dest='ttl', default=30, type=int, help='TTL of job')
     gen_parser.set_defaults(func=gen)
 
     backup_parser = sub_parser.add_parser('backup')
@@ -69,6 +70,7 @@ def initialize_gen(args):
         'backup_host': backup_host,
         'backup_host_path': backup_host_path,
         'backup_identifier': args.identifier,
+        'ttl': args.ttl,
     }
 
 
@@ -78,7 +80,7 @@ def gen(args):
     print(f"Generating {len(netids)} jobs")
     for netid in netids:
         kwargs['netid'] = netid
-        print(backup_template.render(**kwargs))
+        # print(backup_template.render(**kwargs))
         (backup_job_dir / f'{netid}.yml').write_text(backup_template.render(**kwargs))
         (restore_job_dir / f'{netid}.yml').write_text(restore_template.render(**kwargs))
     print(f"done")
@@ -104,8 +106,11 @@ def backup_restore(args, label: str):
             job_files.append(job_file)
 
     if not args.yes:
-        print(f'Included jobs:')
-        print(json.dumps([str(job_file.name) for job_file in job_files], indent=2))
+        if f is not None:
+            print(f'Included jobs:')
+            print(json.dumps([str(job_file.name) for job_file in job_files], indent=2))
+        else:
+            print(f'{len(job_files)=}')
         y = input('Continue? [N/y] ')
         if not y.lower().startswith('y'):
             print('exiting')
